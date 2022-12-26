@@ -19,7 +19,7 @@ def clear_all_fields(editor: Editor) -> None:
     fields = note_type["flds"]
     for field in fields:
         note[field["name"]] = ""
-    mw.reset()
+    editor.loadNoteKeepingFocus()
 
 
 def toggle_all_sticky(editor: Editor) -> None:
@@ -37,7 +37,7 @@ def toggle_all_sticky(editor: Editor) -> None:
     else:
         for field in fields:
             field["sticky"] = True
-    mw.reset()
+    editor.loadNoteKeepingFocus()
 
 
 def add_buttons(buttons: list[str], editor: Editor) -> None:

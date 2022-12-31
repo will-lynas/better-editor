@@ -9,28 +9,33 @@ def get_absolute_path(relative_path: str) -> str:
     return os.path.join(file_dir, relative_path)
 
 
-def clear_all_fields(editor: Editor) -> None:
+def reset_all_fields(editor: Editor) -> None:
+    """Turn off sticky for all fields, and clear all fields."""
     note = editor.note
     if not note or not mw:
         return
     note_type = note.note_type()
     if not note_type:
         return
+
     fields = note_type["flds"]
     for field in fields:
         note[field["name"]] = ""
+        field["sticky"] = False
     editor.loadNoteKeepingFocus()
 
 
 def toggle_all_sticky(editor: Editor) -> None:
+    """If any field is sticky, turn sticky off for all fields. Else, turn on for all fields."""
+
     note = editor.note
     if not note or not mw:
         return
     note_type = note.note_type()
     if not note_type:
         return
-    fields = note_type["flds"]
 
+    fields = note_type["flds"]
     if any(field["sticky"] for field in fields):
         for field in fields:
             field["sticky"] = False
@@ -42,14 +47,14 @@ def toggle_all_sticky(editor: Editor) -> None:
 
 def add_buttons(buttons: list[str], editor: Editor) -> None:
 
-    # clear_all_fields
+    # reset_fields
     icon = get_absolute_path("red_cross.png")
-    hotkey = "Ctrl+9"
+    hotkey = "Ctrl+F9"
     b = editor.addButton(
         icon,
-        "clear_all_fields",
-        clear_all_fields,
-        tip=f"Clear all fields ({hotkey})",
+        "reset_all_fields",
+        reset_all_fields,
+        tip=f"Reset all fields ({hotkey})",
         keys=hotkey
     )
     buttons.append(b)
